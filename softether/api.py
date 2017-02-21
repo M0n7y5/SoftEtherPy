@@ -416,7 +416,7 @@ class SoftEtherAPI(object):
     def get_ca(self, hub_name=None, key=None):
         payload = {
             'HubName': ('string', [hub_name]),
-            'Key': ('int', [key])
+            'Key': ('raw', [key])
         }
 
         return self.call_method('GetCa', payload)
@@ -424,7 +424,7 @@ class SoftEtherAPI(object):
     def delete_ca(self, hub_name=None, key=None):
         payload = {
             'HubName': ('string', [hub_name]),
-            'Key': ('int', [key])
+            'Key': ('raw', [key])
         }
 
         return self.call_method('DeleteCa', payload)
@@ -750,16 +750,44 @@ class SoftEtherAPI(object):
 
         return self.call_method('DisableSecureNAT', payload)
 
-    def set_secure_nat_option(self, hub_name=None):
+    # NOTE: mac_address, ip, mask, use_nat, use_dhcp, apply_dhcp_push_routes, save_log are
+    #   required; others are optional
+    def set_secure_nat_option(self, hub_name=None, use_nat=1, use_dhcp=1, save_log=1,
+                            apply_dhcp_push_routes=1, mac_address=None, ip=None, mask=None,
+                            mtu=0, nat_tcp_timeout=0, nat_udp_timeout=0,
+                            dhcp_lease_ip_start=0, dhcp_lease_ip_end=0,
+                            dhcp_subnet_mask=0, dhcp_expire_time_span=0,
+                            dhcp_gateway_address=0, dhcp_dns_server_address=0,
+                            dhcp_dns_server_address2=0, dhcp_domain_name="",
+                            dhcp_push_routes=""):
         payload = {
-            'HubName': ('string', [hub_name])
+            'RpcHubName': ('string', [hub_name]),
+            'MacAddress': ('raw', [mac_address]),
+            'Ip': ('int', [ip]),
+            'Mask': ('int', [mask]),
+            'UseNat': ('int', [use_nat]),
+            'Mtu': ('int', [mtu]),
+            'NatTcpTimeout': ('int', [nat_tcp_timeout]),
+            'NatUdpTimeout': ('int', [nat_udp_timeout]),
+            'UseDhcp': ('int', [use_dhcp]),
+            'DhcpLeaseIPStart': ('int', [dhcp_lease_ip_start]),
+            'DhcpLeaseIPEnd': ('int', [dhcp_lease_ip_end]),
+            'DhcpSubnetMask': ('int', [dhcp_subnet_mask]),
+            'DhcpExpireTimeSpan': ('int', [dhcp_expire_time_span]),
+            'DhcpGatewayAddress': ('int', [dhcp_gateway_address]),
+            'DhcpDnsServerAddress': ('int', [dhcp_dns_server_address]),
+            'DhcpDnsServerAddress2': ('int', [dhcp_dns_server_address2]),
+            'DhcpDomainName': ('string', [dhcp_domain_name]),
+            'SaveLog': ('int', [save_log]),
+            'ApplyDhcpPushRoutes': ('int', [apply_dhcp_push_routes]),
+            'DhcpPushRoutes': ('string', [dhcp_push_routes])
         }
 
         return self.call_method('SetSecureNATOption', payload)
 
     def get_secure_nat_option(self, hub_name=None):
         payload = {
-            'HubName': ('string', [hub_name])
+            'RpcHubName': ('string', [hub_name])
         }
 
         return self.call_method('GetSecureNATOption', payload)
