@@ -578,7 +578,7 @@ class SoftEtherAPI(object):
         return self.call_method('SetAccessList', payload)
 
     # auth_type = 0 for no auth, 1 for password auth
-    def create_user(self, hub_name=None, name=None, group_name=None, realname=None, note=None, created_time=None, updated_time=None, expire_time=None, num_login=None, auth_type=None, hashed_key=None):
+    def create_user(self, hub_name=None, name=None, group_name=None, realname=None, note=None, created_time=None, updated_time=None, expire_time=None, num_login=None, auth_type=None, hashed_key=None, ntlm_secure_hash=None):
         payload = {
             'HubName': ('string', [hub_name]),
             'Name': ('string', [name]),
@@ -590,12 +590,13 @@ class SoftEtherAPI(object):
             'ExpireTime': ('int', [expire_time]),
             'NumLogin': ('int', [num_login]),
             'AuthType': ('int', [auth_type]),
-            'HashedKey': ('raw', [hashed_key])
+            'HashedKey': ('raw', [hashed_key]),
+            'NtLmSecureHash': ('raw', [ntlm_secure_hash])
         }
 
         return self.call_method('CreateUser', payload)
 
-    def set_user(self, hub_name=None, name=None, group_name=None, realname=None, note=None, created_time=None, updated_time=None, expire_time=None, num_login=None, auth_type=None, hashed_key=None):
+    def set_user(self, hub_name=None, name=None, group_name=None, realname=None, note=None, created_time=None, updated_time=None, expire_time=None, num_login=None, auth_type=None, hashed_key=None, ntlm_secure_hash=None):
         payload = {
             'HubName': ('string', [hub_name]),
             'Name': ('string', [name]),
@@ -607,7 +608,8 @@ class SoftEtherAPI(object):
             'ExpireTime': ('int64', [expire_time]),
             'NumLogin': ('int', [num_login]),
             'AuthType': ('int', [auth_type]),
-            'HashedKey': ('raw', [hashed_key])
+            'HashedKey': ('raw', [hashed_key]),
+            'NtLmSecureHash': ('raw', [ntlm_secure_hash])
         }
 
         return self.call_method('SetUser', payload)
