@@ -579,6 +579,9 @@ class SoftEtherAPI(object):
 
     # auth_type = 0 for no auth, 1 for password auth
     def create_user(self, hub_name=None, name=None, group_name=None, realname=None, note=None, created_time=None, updated_time=None, expire_time=None, num_login=None, auth_type=None, hashed_key=None, ntlm_secure_hash=None):
+        secure_password = hashlib.new('sha')
+        secure_password.update(hashed_key)
+        secure_password.update(self.connect_response['random'][0])
         payload = {
             'HubName': ('string', [hub_name]),
             'Name': ('string', [name]),
@@ -591,7 +594,7 @@ class SoftEtherAPI(object):
             'NumLogin': ('int', [num_login]),
             'AuthType': ('int', [auth_type]),
             'HashedKey': ('raw', [hashed_key]),
-            'NtLmSecureHash': ('raw', [ntlm_secure_hash])
+            'NtLmSecureHash': ('raw', [secure_password.digest()])
         }
 
         return self.call_method('CreateUser', payload)
